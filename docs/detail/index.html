@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail - DeepLink Practice App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background-color: #007AFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #0051D5;
+        }
+
+        .btn:active {
+            background-color: #004FC4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detail 화면</h1>
+        <p>앱으로 이동하시겠습니까?</p>
+        <a href="#" class="btn" id="openApp">앱으로 열기</a>
+    </div>
+
+    <script>
+        const openAppBtn = document.getElementById('openApp');
+
+        openAppBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // 현재 페이지 경로를 가져와서 딥링크 URL 생성
+            const path = window.location.pathname;
+            const search = window.location.search;
+
+            // jayjazy.github.io 도메인으로 딥링크 생성
+            const deepLink = 'https://jayjazy.github.io' + path + search;
+
+            // 딥링크로 이동 시도
+            window.location.href = deepLink;
+        });
+    </script>
+</body>
+</html>
