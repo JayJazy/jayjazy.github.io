@@ -1,141 +1,16 @@
- <!DOCTYPE html>
+  <!DOCTYPE html>
   <html>
   <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>앱으로 이동 중...</title>
-      <style>
-          body {
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 100vh;
-              margin: 0;
-              background: #f5f5f5;
-          }
-          .container {
-              text-align: center;
-              padding: 40px;
-              background: white;
-              border-radius: 12px;
-              box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-              max-width: 400px;
-          }
-          #fallback {
-              display: none;
-          }
-          .spinner {
-              border: 3px solid #f3f3f3;
-              border-top: 3px solid #3498db;
-              border-radius: 50%;
-              width: 40px;
-              height: 40px;
-              animation: spin 1s linear infinite;
-              margin: 20px auto;
-          }
-          @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-          }
-          a {
-              display: inline-block;
-              margin-top: 20px;
-              padding: 12px 24px;
-              background: #007AFF;
-              color: white;
-              text-decoration: none;
-              border-radius: 8px;
-          }
-          .url {
-              font-family: monospace;
-              background: #f0f0f0;
-              padding: 8px;
-              border-radius: 4px;
-              font-size: 12px;
-              word-break: break-all;
-              margin: 10px 0;
-          }
-          .manual-link {
-              margin-top: 15px;
-              padding: 10px;
-              background: #e8f4ff;
-              border-radius: 8px;
-          }
-      </style>
+      <title>Redirecting...</title>
   </head>
   <body>
-      <div class="container">
-          <div id="loading">
-              <h2>앱으로 이동 중...</h2>
-              <div class="spinner"></div>
-              <p>DeepLink Practice App을 실행하고 있습니다</p>
-              <div class="url" id="currentUrl"></div>
-
-              <!-- 수동 링크 (모바일용) -->
-              <div class="manual-link">
-                  <p style="font-size: 14px; margin: 5px 0;">자동으로 이동되지 않나요?</p>
-                  <a href="#" id="manualLink" style="font-size: 16px;">여기를 클릭하세요</a>
-              </div>
-          </div>
-
-          <div id="fallback">
-              <h2>앱을 찾을 수 없습니다</h2>
-              <p>DeepLink Practice App이 설치되어 있지 않습니다.</p>
-              <a href="https://play.google.com/store/apps/details?id=com.jay.deeplinkapp">
-                  Play Store에서 설치하기
-              </a>
-              <p style="margin-top: 20px; font-size: 14px; color: #666;">
-                  앱을 설치한 후 다시 이 링크를 클릭하세요.
-              </p>
-          </div>
-      </div>
-
       <script>
-          (function() {
-              // 현재 전체 URL
-              const fullUrl = window.location.href;
+          const currentUrl = window.location.href;
 
-              // URL 표시
-              document.getElementById('currentUrl').textContent = fullUrl;
-
-              // 수동 링크 설정
-              const manualLink = document.getElementById('manualLink');
-              manualLink.href = fullUrl;
-
-              // iOS 여부 확인
-              const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-              // Android만 자동 리다이렉트 시도
-              if (!isIOS) {
-                  // iframe 방식으로 앱 열기 시도 (더 안정적)
-                  const iframe = document.createElement('iframe');
-                  iframe.style.display = 'none';
-                  iframe.src = fullUrl;
-                  document.body.appendChild(iframe);
-
-                  // location 변경도 시도
-                  setTimeout(function() {
-                      window.location.href = fullUrl;
-                  }, 100);
-              }
-
-              // 3초 후 fallback 표시
-              setTimeout(function() {
-                  // 페이지를 떠나지 않았다면 앱이 없는 것
-                  if (document.visibilityState === 'visible') {
-                      document.getElementById('loading').style.display = 'none';
-                      document.getElementById('fallback').style.display = 'block';
-                  }
-              }, 3000);
-
-              // 페이지가 숨겨지면 (앱이 열리면) 타이머 취소
-              document.addEventListener('visibilitychange', function() {
-                  if (document.visibilityState === 'hidden') {
-                      // 앱이 열렸음! 아무것도 안 함
-                  }
-              });
-          })();
+          // 바로 리다이렉트
+          window.location.replace(currentUrl);
       </script>
   </body>
   </html>
