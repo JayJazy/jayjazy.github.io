@@ -1,22 +1,9 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
   <html>
   <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>앱으로 이동 중...</title>
-      <script>
-          // 현재 전체 URL 가져오기
-          const currentUrl = window.location.href;
-
-          // 즉시 앱 열기 시도
-          window.location.href = currentUrl;
-
-          // 2.5초 후에도 페이지에 있다면 앱이 없는 것
-          setTimeout(function() {
-              document.getElementById('loading').style.display = 'none';
-              document.getElementById('fallback').style.display = 'block';
-          }, 2500);
-      </script>
       <style>
           body {
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -69,6 +56,12 @@
               word-break: break-all;
               margin: 10px 0;
           }
+          .manual-link {
+              margin-top: 15px;
+              padding: 10px;
+              background: #e8f4ff;
+              border-radius: 8px;
+          }
       </style>
   </head>
   <body>
@@ -78,6 +71,12 @@
               <div class="spinner"></div>
               <p>DeepLink Practice App을 실행하고 있습니다</p>
               <div class="url" id="currentUrl"></div>
+
+              <!-- 수동 링크 (모바일용) -->
+              <div class="manual-link">
+                  <p style="font-size: 14px; margin: 5px 0;">자동으로 이동되지 않나요?</p>
+                  <a href="#" id="manualLink" style="font-size: 16px;">여기를 클릭하세요</a>
+              </div>
           </div>
 
           <div id="fallback">
@@ -93,8 +92,50 @@
       </div>
 
       <script>
-          // 현재 URL 표시
-          document.getElementById('currentUrl').textContent = window.location.href;
+          (function() {
+              // 현재 전체 URL
+              const fullUrl = window.location.href;
+
+              // URL 표시
+              document.getElementById('currentUrl').textContent = fullUrl;
+
+              // 수동 링크 설정
+              const manualLink = document.getElementById('manualLink');
+              manualLink.href = fullUrl;
+
+              // iOS 여부 확인
+              const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+              // Android만 자동 리다이렉트 시도
+              if (!isIOS) {
+                  // iframe 방식으로 앱 열기 시도 (더 안정적)
+                  const iframe = document.createElement('iframe');
+                  iframe.style.display = 'none';
+                  iframe.src = fullUrl;
+                  document.body.appendChild(iframe);
+
+                  // location 변경도 시도
+                  setTimeout(function() {
+                      window.location.href = fullUrl;
+                  }, 100);
+              }
+
+              // 3초 후 fallback 표시
+              setTimeout(function() {
+                  // 페이지를 떠나지 않았다면 앱이 없는 것
+                  if (document.visibilityState === 'visible') {
+                      document.getElementById('loading').style.display = 'none';
+                      document.getElementById('fallback').style.display = 'block';
+                  }
+              }, 3000);
+
+              // 페이지가 숨겨지면 (앱이 열리면) 타이머 취소
+              document.addEventListener('visibilitychange', function() {
+                  if (document.visibilityState === 'hidden') {
+                      // 앱이 열렸음! 아무것도 안 함
+                  }
+              });
+          })();
       </script>
   </body>
   </html>
